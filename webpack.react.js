@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/renderer.tsx',
+  entry: './src/renderer/index.tsx',
   target: 'electron-renderer',
   devtool: 'source-map',
   devServer: {
@@ -32,7 +32,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/main/index.html'
     })
   ]
 };

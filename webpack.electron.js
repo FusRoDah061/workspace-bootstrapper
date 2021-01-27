@@ -4,7 +4,7 @@ module.exports = {
   // Build Mode
   mode: 'development',
   // Electron Entrypoint
-  entry: './src/main.ts',
+  entry: './src/main/index.ts',
   target: 'electron-main',
   resolve: {
     alias: {
