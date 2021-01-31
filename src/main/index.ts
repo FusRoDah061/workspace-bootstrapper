@@ -3,10 +3,10 @@ import isDev from 'electron-is-dev';
 
 const createWindow = (): void => {
   const win = new BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
+    minWidth: 1000,
     minHeight: 600,
-    minWidth: 800,
     webPreferences: {
       nodeIntegration: true,
     },

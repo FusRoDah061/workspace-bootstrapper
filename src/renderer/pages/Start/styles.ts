@@ -36,12 +36,18 @@ export const SearchButton = styled.button`
   border-radius: 3px;
 `;
 
-export const WorkspaceList = styled.ul`
+export const ListContainer = styled.div`
+  height: 423px;
   margin-top: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
+export const WorkspaceList = styled.ul`
 `;
 
 export const ListHearItem = styled.li`
-  margin-bottom: 13px;
+  margin-bottom: 10px;
   list-style: none;
 `;
 
@@ -61,7 +67,6 @@ export const Title = styled.p`
 export const Labels = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  margin-bottom: 10px;
 
   p:nth-child(2) {
     text-align: right;

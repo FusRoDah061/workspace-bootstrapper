@@ -10,7 +10,7 @@ export const PageContainer = styled.main`
 
 export const PageHeader = styled.header`
   width: 100%;
-  margin-bottom: 13px;
+  margin-bottom: 10px;
 
   h1 {
     text-align: left;
@@ -21,8 +21,8 @@ export const PageHeader = styled.header`
 
 export const PageContent = styled.div`
   display: grid;
-  grid-template-columns: 560px 280px;
-  grid-column-gap: 40px;
+  grid-template-columns: 570px 280px;
+  grid-column-gap: 30px;
 `;
 
 export const MainContent = styled.section``;
