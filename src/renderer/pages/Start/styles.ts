@@ -1,5 +1,6 @@
-import { colors } from '@/renderer/styles/variables';
+import { darken, lighten } from 'polished';
 import styled from 'styled-components';
+import { colors } from '@/renderer/styles/variables';
 
 export const Button = styled.button`
   width: 100%;
@@ -10,6 +11,11 @@ export const Button = styled.button`
   background: ${colors.primaryVariant};
   margin-bottom: 10px;
   border-radius: 5px;
+  transition: 0.2s;
+
+  &:hover {
+    background: ${darken(0.05, colors.primaryVariant)};
+  }
 `;
 
 export const SearchForm = styled.form`
@@ -34,6 +40,11 @@ export const SearchButton = styled.button`
   border: none;
   background: ${colors.primaryVariant};
   border-radius: 3px;
+  transition: 0.2s;
+
+  &:hover {
+    background: ${darken(0.05, colors.primaryVariant)};
+  }
 `;
 
 export const ListContainer = styled.div`
@@ -96,6 +107,11 @@ export const DeleteButton = styled(Button)`
   border-radius: 3px;
   margin-right: 10px;
   margin-bottom: 0;
+  transition: 0.2s;
+
+  &:hover {
+    background: ${darken(0.1, colors.error)};
+  }
 `;
 
 export const InspectButton = styled(Button)`
@@ -106,6 +122,11 @@ export const InspectButton = styled(Button)`
   border-radius: 3px;
   margin-right: 10px;
   margin-bottom: 0;
+  transition: 0.2s;
+
+  &:hover {
+    background: ${darken(0.05, colors.primary)};
+  }
 `;
 
 export const LaunchButton = styled(Button)`
@@ -117,4 +138,9 @@ export const LaunchButton = styled(Button)`
   color: ${colors.textLight};
   border-radius: 3px;
   margin-bottom: 0;
+  transition: 0.2s;
+
+  &:hover {
+    background: ${lighten(0.2, colors.secondary)};
+  }
 `;
