@@ -1,9 +1,13 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import Routes from './routes';
+import GlobalStyles from './styles/globals';
 
 const App: React.FC = () => (
-  <div className="app">
-    <h1>Hello Mundo</h1>
-  </div>
+  <MemoryRouter>
+    <GlobalStyles />
+    <Routes />
+  </MemoryRouter>
 );
 
 export default App;
