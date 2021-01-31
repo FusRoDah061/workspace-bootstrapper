@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   // Build Mode
@@ -22,5 +23,12 @@ module.exports = {
   output: {
     path: __dirname + '/build',
     filename: 'main.js'
-  }
+  },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "src/**/static/*", to:'static/[name].[ext]' },
+      ],
+    }),
+  ],
 }
