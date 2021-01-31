@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import { colors } from './variables';
 
 export default createGlobalStyle`
-:root {
+  :root {
     font-size: 60%;
   }
 
@@ -14,11 +14,18 @@ export default createGlobalStyle`
   }
 
   html, body, #root {
+    width: 100vw;
     height: 100vh;
   }
 
+  #root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   body {
-    font: 400 1.6rem 'OpenSans-Regular', sans-serif;
+    font: 400 14px 'OpenSans-Regular', sans-serif;
     background: ${colors.primary};
     color: ${colors.textDark};
     -webkit-font-smoothing: antialiased;
