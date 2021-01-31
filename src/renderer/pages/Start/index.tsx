@@ -22,6 +22,9 @@ import {
   Button,
 } from './styles';
 
+import chevronUp from '../../assets/chevron-up-icon-light.svg';
+import chevronDown from '../../assets/chevron-down-icon-light.svg';
+
 const Start: React.FC = () => (
   <PageContainer>
     <PageHeader>
@@ -39,7 +42,10 @@ const Start: React.FC = () => (
             <ListHearItem>Today</ListHearItem>
 
             <WorkspaceItem>
-              <Title>Work setup (docker + java + plsql)</Title>
+              <Title>
+                Work setup (docker + java + plsql)
+                <img src={chevronDown} alt="Arrow pointing down" />
+              </Title>
               <Labels>
                 <p>4 programs</p>
                 <p>created at 07/01/2019</p>
@@ -49,7 +55,10 @@ const Start: React.FC = () => (
             <ListHearItem>Yesterday</ListHearItem>
 
             <WorkspaceItem>
-              <Title>Casual web</Title>
+              <Title>
+                Casual web
+                <img src={chevronDown} alt="Arrow pointing down" />
+              </Title>
               <Labels>
                 <p>2 programs</p>
                 <p>created at 10/10/2018</p>
@@ -65,14 +74,20 @@ const Start: React.FC = () => (
             <ListHearItem>December, 2020</ListHearItem>
 
             <WorkspaceItem>
-              <Title>Gaming with steam</Title>
+              <Title>
+                Gaming with steam
+                <img src={chevronDown} alt="Arrow pointing down" />
+              </Title>
               <Labels>
                 <p>2 programs</p>
                 <p>created at 04/12/2012</p>
               </Labels>
             </WorkspaceItem>
             <WorkspaceItem>
-              <Title>Streaming</Title>
+              <Title>
+                Streaming
+                <img src={chevronDown} alt="Arrow pointing down" />
+              </Title>
               <Labels>
                 <p>3 programs</p>
                 <p>created at 07/25/2020</p>
@@ -82,14 +97,20 @@ const Start: React.FC = () => (
             <ListHearItem>December, 2020</ListHearItem>
 
             <WorkspaceItem>
-              <Title>Gaming with steam</Title>
+              <Title>
+                Gaming with steam
+                <img src={chevronDown} alt="Arrow pointing down" />
+              </Title>
               <Labels>
                 <p>2 programs</p>
                 <p>created at 04/12/2012</p>
               </Labels>
             </WorkspaceItem>
             <WorkspaceItem>
-              <Title>Streaming</Title>
+              <Title>
+                Streaming
+                <img src={chevronDown} alt="Arrow pointing down" />
+              </Title>
               <Labels>
                 <p>3 programs</p>
                 <p>created at 07/25/2020</p>

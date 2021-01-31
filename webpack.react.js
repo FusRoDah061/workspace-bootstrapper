@@ -23,7 +23,18 @@ module.exports = {
         test: /\.ts(x?)$/,
         include: /src/,
         use: [{ loader: 'ts-loader' }]
-      }
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
     ]
   },
   output: {

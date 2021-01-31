@@ -59,9 +59,17 @@ export const WorkspaceItem = styled.li`
   background: ${colors.primaryVariant};
 `;
 
-export const Title = styled.p`
+export const Title = styled.button`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
   font-weight: 700;
   margin-bottom: 10px;
+  font-size: 14px;
+  border: none;
+  background: none;
+  outline: none;
 `;
 
 export const Labels = styled.div`
