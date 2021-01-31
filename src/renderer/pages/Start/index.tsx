@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useCallback, useMemo, useState,
+} from 'react';
 import {
   PageContainer,
   PageHeader,
@@ -6,6 +8,10 @@ import {
   MainContent,
   SideContent,
 } from '@/renderer/styles/shared';
+import { useHistory } from 'react-router';
+import WorkspaceDTO from '@/renderer/dtos/WorkspaceDTO';
+import getData from '@/renderer/utils/testData';
+import { differenceInDays, format } from 'date-fns';
 import {
   SearchForm,
   SearchButton,
@@ -25,107 +31,127 @@ import {
 import chevronUp from '../../assets/chevron-up-icon-light.svg';
 import chevronDown from '../../assets/chevron-down-icon-light.svg';
 
-const Start: React.FC = () => (
-  <PageContainer>
-    <PageHeader>
-      <h1>Your workspaces</h1>
-    </PageHeader>
+interface ListGroup {
+  label: string;
+  items: Array<WorkspaceDTO>;
+}
 
-    <PageContent>
-      <MainContent>
-        <SearchForm>
-          <input type="text" placeholder="Search workspace" />
-          <SearchButton>Search</SearchButton>
-        </SearchForm>
-        <ListContainer>
-          <WorkspaceList>
-            <ListHearItem>Today</ListHearItem>
+const Start: React.FC = () => {
+  const history = useHistory();
+  const [workspaces, setWorkspaces] = useState<Array<WorkspaceDTO>>(getData());
 
-            <WorkspaceItem>
-              <Title>
-                Work setup (docker + java + plsql)
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>4 programs</p>
-                <p>created at 07/01/2019</p>
-              </Labels>
-            </WorkspaceItem>
+  const listGroups = useMemo((): Array<ListGroup> => {
+    const today = new Date();
+    const groupObject: Record<string, Array<WorkspaceDTO>> = {};
 
-            <ListHearItem>Yesterday</ListHearItem>
+    workspaces.forEach((workspace) => {
+      const difference = differenceInDays(today, workspace.createdAt);
+      let date;
 
-            <WorkspaceItem>
-              <Title>
-                Casual web
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>2 programs</p>
-                <p>created at 10/10/2018</p>
-              </Labels>
+      if (difference <= 0) {
+        date = 'Today';
+      } else if (difference === 1) {
+        date = 'Yesterday';
+      } else {
+        date = format(workspace.createdAt, 'MMMM, yyyy');
+      }
 
-              <Actions>
-                <DeleteButton>Delete</DeleteButton>
-                <InspectButton>Inspect</InspectButton>
-                <LaunchButton>Launch</LaunchButton>
-              </Actions>
-            </WorkspaceItem>
+      const formattedWorkspace = workspace;
+      formattedWorkspace.formattedCreatedAt = format(workspace.createdAt, 'dd/MM/yyyy');
+      formattedWorkspace.formattedUpdatedAt = format(workspace.updatedAt, 'dd/MM/yyyy');
 
-            <ListHearItem>December, 2020</ListHearItem>
+      if (date in groupObject) {
+        groupObject[date].push(formattedWorkspace);
+      } else {
+        groupObject[date] = [formattedWorkspace];
+      }
+    });
 
-            <WorkspaceItem>
-              <Title>
-                Gaming with steam
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>2 programs</p>
-                <p>created at 04/12/2012</p>
-              </Labels>
-            </WorkspaceItem>
-            <WorkspaceItem>
-              <Title>
-                Streaming
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>3 programs</p>
-                <p>created at 07/25/2020</p>
-              </Labels>
-            </WorkspaceItem>
+    const groups = Object.keys(groupObject).map((key) => ({
+      label: key,
+      items: groupObject[key],
+    }));
 
-            <ListHearItem>December, 2020</ListHearItem>
+    return groups;
+  }, [workspaces]);
 
-            <WorkspaceItem>
-              <Title>
-                Gaming with steam
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>2 programs</p>
-                <p>created at 04/12/2012</p>
-              </Labels>
-            </WorkspaceItem>
-            <WorkspaceItem>
-              <Title>
-                Streaming
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>3 programs</p>
-                <p>created at 07/25/2020</p>
-              </Labels>
-            </WorkspaceItem>
-          </WorkspaceList>
-        </ListContainer>
-      </MainContent>
+  const handleInspect = useCallback((workspace: WorkspaceDTO) => {
+    console.log(workspace);
+    history.push('/workspace');
+  }, [history]);
 
-      <SideContent>
-        <Button>Create workspace</Button>
-        <Button>Import workspaces</Button>
-      </SideContent>
-    </PageContent>
-  </PageContainer>
-);
+  const handleDelete = useCallback((workspace: WorkspaceDTO) => {
+    console.log(workspace);
+  }, []);
+
+  const handleLaunch = useCallback((workspace: WorkspaceDTO) => {
+    console.log(workspace);
+  }, []);
+
+  return (
+    <PageContainer>
+      <PageHeader>
+        <h1>Your workspaces</h1>
+      </PageHeader>
+
+      <PageContent>
+        <MainContent>
+          <SearchForm>
+            <input type="text" placeholder="Search workspace" />
+            <SearchButton>Search</SearchButton>
+          </SearchForm>
+          <ListContainer>
+            <WorkspaceList>
+              {listGroups.map((group: ListGroup) => {
+                const label = <ListHearItem key={group.label}>{group.label}</ListHearItem>;
+
+                const itemsElements = group.items.map((workspace) => (
+                  <WorkspaceItem key={workspace.id}>
+                    <Title>
+                      {workspace.title}
+                      <img src={chevronDown} alt="Arrow pointing down" />
+                    </Title>
+                    <Labels>
+                      <p>
+                        {workspace.programs.length}
+                        {' '}
+                        programs
+                      </p>
+                      <p>
+                        created at
+                        {' '}
+                        {workspace.formattedCreatedAt}
+                      </p>
+                    </Labels>
+
+                    <Actions>
+                      <DeleteButton onClick={() => handleDelete(workspace)}>
+                        Delete
+                      </DeleteButton>
+                      <InspectButton onClick={() => handleInspect(workspace)}>
+                        Inspect
+                      </InspectButton>
+                      <LaunchButton onClick={() => handleLaunch(workspace)}>
+                        Launch
+                      </LaunchButton>
+                    </Actions>
+                  </WorkspaceItem>
+                ));
+
+                return [label, ...itemsElements];
+              })}
+            </WorkspaceList>
+          </ListContainer>
+        </MainContent>
+
+        <SideContent>
+          <Button>Create workspace</Button>
+          <Button>Import workspaces</Button>
+          <Button>Export workspaces</Button>
+        </SideContent>
+      </PageContent>
+    </PageContainer>
+  );
+};
 
 export default Start;
