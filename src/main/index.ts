@@ -15,9 +15,7 @@ const createWindow = (): void => {
   console.log('Development mode: ', isDev);
 
   win.loadURL(
-    isDev
-      ? 'http://localhost:9000'
-      : `file://${app.getAppPath()}/index.html`,
+    isDev ? 'http://localhost:9000' : `file://${app.getAppPath()}/index.html`,
   );
 };
 

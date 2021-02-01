@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useMemo, useState,
-} from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   PageContainer,
   PageHeader,
@@ -44,7 +42,7 @@ const Start: React.FC = () => {
     const today = new Date();
     const groupObject: Record<string, Array<WorkspaceDTO>> = {};
 
-    workspaces.forEach((workspace) => {
+    workspaces.forEach(workspace => {
       const difference = differenceInDays(today, workspace.createdAt);
       let date;
 
@@ -57,8 +55,14 @@ const Start: React.FC = () => {
       }
 
       const formattedWorkspace = workspace;
-      formattedWorkspace.formattedCreatedAt = format(workspace.createdAt, 'dd/MM/yyyy');
-      formattedWorkspace.formattedUpdatedAt = format(workspace.updatedAt, 'dd/MM/yyyy');
+      formattedWorkspace.formattedCreatedAt = format(
+        workspace.createdAt,
+        'dd/MM/yyyy',
+      );
+      formattedWorkspace.formattedUpdatedAt = format(
+        workspace.updatedAt,
+        'dd/MM/yyyy',
+      );
 
       if (date in groupObject) {
         groupObject[date].push(formattedWorkspace);
@@ -67,7 +71,7 @@ const Start: React.FC = () => {
       }
     });
 
-    const groups = Object.keys(groupObject).map((key) => ({
+    const groups = Object.keys(groupObject).map(key => ({
       label: key,
       items: groupObject[key],
     }));
@@ -75,10 +79,13 @@ const Start: React.FC = () => {
     return groups;
   }, [workspaces]);
 
-  const handleInspect = useCallback((workspace: WorkspaceDTO) => {
-    console.log(workspace);
-    history.push('/workspace');
-  }, [history]);
+  const handleInspect = useCallback(
+    (workspace: WorkspaceDTO) => {
+      console.log(workspace);
+      history.push('/workspace');
+    },
+    [history],
+  );
 
   const handleDelete = useCallback((workspace: WorkspaceDTO) => {
     console.log(workspace);
@@ -103,23 +110,20 @@ const Start: React.FC = () => {
           <ListContainer>
             <WorkspaceList>
               {listGroups.map((group: ListGroup) => {
-                const label = <ListHearItem key={group.label}>{group.label}</ListHearItem>;
+                const label = (
+                  <ListHearItem key={group.label}>{group.label}</ListHearItem>
+                );
 
-                const itemsElements = group.items.map((workspace) => (
+                const itemsElements = group.items.map(workspace => (
                   <WorkspaceItem key={workspace.id}>
                     <Title>
                       {workspace.title}
                       <img src={chevronDown} alt="Arrow pointing down" />
                     </Title>
                     <Labels>
-                      <p>
-                        {workspace.programs.length}
-                        {' '}
-                        programs
-                      </p>
+                      <p>{`${workspace.programs.length} programs`}</p>
                       <p>
                         created at
-                        {' '}
                         {workspace.formattedCreatedAt}
                       </p>
                     </Labels>

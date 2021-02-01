@@ -54,8 +54,7 @@ export const ListContainer = styled.div`
   overflow-x: hidden;
 `;
 
-export const WorkspaceList = styled.ul`
-`;
+export const WorkspaceList = styled.ul``;
 
 export const ListHearItem = styled.li`
   margin-bottom: 10px;

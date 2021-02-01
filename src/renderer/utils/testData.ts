@@ -105,11 +105,11 @@ const getData = (): Array<WorkspaceDTO> => {
       createdAt: parseISO('2020-12-03T20:13:25.775Z'),
       updatedAt: parseISO('2020-12-24T20:13:25.775Z'),
     },
-  ]
+  ];
 
   data.sort((a, b) => compareDesc(a.createdAt, b.createdAt));
 
   return data;
-}
+};
 
 export default getData;
