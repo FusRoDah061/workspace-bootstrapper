@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   PageContainer,
   PageHeader,
@@ -44,9 +44,11 @@ export interface WorkspaceRouteState {
 const Workspace: React.FC = () => {
   const history = useHistory<WorkspaceRouteState>();
   const originalWorkspace = history.location.state.workspace;
-  const [editedWorkspace, setEditedWorkspace] = useState<WorkspaceDTO>(
-    originalWorkspace,
-  );
+  const [editedWorkspace, setEditedWorkspace] = useState<WorkspaceDTO>(() => {
+    const workspace = originalWorkspace;
+    workspace.applications.sort((a, b) => a.order - b.order);
+    return workspace;
+  });
   const [changesMade, setChangesMade] = useState(false);
 
   const createdAtFormatted = useMemo(() => {
@@ -83,23 +85,29 @@ const Workspace: React.FC = () => {
           </AddProgramButton>
 
           <ApplicationsList>
-            {editedWorkspace.programs.map(program => {
+            {editedWorkspace.applications.map(application => {
               return (
                 <ApplicationItem>
                   <Collapsible
-                    title={program.name}
+                    title={application.name}
                     header={
                       // eslint-disable-next-line react/jsx-wrap-multilines
                       <ApplicationItemHeader>
                         <img src={dragIcon} alt="Drag" />
-                        <p>{program.name}</p>
+                        <p>{application.name}</p>
                       </ApplicationItemHeader>
                     }
                   >
                     <ApplicationItemBody>
                       <FormGroup>
-                        <label htmlFor="js-program-name">Program name</label>
-                        <Input id="js-program-name" type="text" />
+                        <label htmlFor="js-application-name">
+                          Application name
+                        </label>
+                        <Input
+                          id="js-application-name"
+                          type="text"
+                          value={application.name}
+                        />
                       </FormGroup>
 
                       <FormGroup>
@@ -107,7 +115,11 @@ const Workspace: React.FC = () => {
                           Executable path
                         </label>
                         <div>
-                          <Input id="js-executable-path" type="text" />
+                          <Input
+                            id="js-executable-path"
+                            type="text"
+                            value={application.target}
+                          />
                           <BrowseButton>Browse...</BrowseButton>
                         </div>
                       </FormGroup>
@@ -120,6 +132,7 @@ const Workspace: React.FC = () => {
                               <Input
                                 id="js-program-type-executable"
                                 type="radio"
+                                checked={application.type === 'exe'}
                               />
                               Executable
                             </label>
@@ -127,6 +140,7 @@ const Workspace: React.FC = () => {
                               <Input
                                 id="js-program-type-command"
                                 type="radio"
+                                checked={application.type === 'cmd'}
                               />
                               Command
                             </label>
@@ -137,7 +151,11 @@ const Workspace: React.FC = () => {
                           <label htmlFor="js-launch-args">
                             Launch arguments
                           </label>
-                          <Input id="js-launch-args" type="text" />
+                          <Input
+                            id="js-launch-args"
+                            type="text"
+                            value={application.args}
+                          />
                         </FormGroup>
                       </FormGoupRow>
 

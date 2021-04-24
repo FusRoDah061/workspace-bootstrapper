@@ -1,9 +1,9 @@
-import ProgramDTO from './ProgramDTO';
+import ApplicationDTO from './ApplicationDTO';
 
 export default interface WorkspaceDTO {
   id: string;
   title: string;
-  programs: Array<ProgramDTO>;
+  applications: Array<ApplicationDTO>;
   createdAt: Date;
   updatedAt: Date;
 }

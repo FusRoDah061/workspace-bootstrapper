@@ -10,7 +10,7 @@ import {
 } from '@/renderer/styles/shared';
 import { useHistory } from 'react-router';
 import WorkspaceDTO from '@/renderer/dtos/WorkspaceDTO';
-import getData from '@/renderer/utils/testData';
+import { getTestData } from '@/renderer/utils/testData';
 import { differenceInDays, format } from 'date-fns';
 import { DATE_FORMAT_SHORT } from '@/constants';
 import { Collapsible } from '@/renderer/components/CollapsableContainer';
@@ -35,7 +35,9 @@ interface ListGroup {
 
 const Start: React.FC = () => {
   const history = useHistory();
-  const [workspaces, setWorkspaces] = useState<Array<WorkspaceDTO>>(getData());
+  const [workspaces, setWorkspaces] = useState<Array<WorkspaceDTO>>(
+    getTestData(),
+  );
 
   const listGroups = useMemo((): Array<ListGroup> => {
     const today = new Date();
@@ -115,7 +117,7 @@ const Start: React.FC = () => {
                     <WorkspaceItem key={workspace.id}>
                       <Collapsible title={workspace.title}>
                         <Labels>
-                          <p>{`${workspace.programs.length} programs`}</p>
+                          <p>{`${workspace.applications.length} programs`}</p>
                           <p>{`created at ${createdAtFormatted}`}</p>
                         </Labels>
 

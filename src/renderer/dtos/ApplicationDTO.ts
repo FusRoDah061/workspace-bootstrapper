@@ -1,4 +1,4 @@
-export default interface ProgramDTO {
+export default interface ApplicationDTO {
   name: string;
   type: 'exe' | 'cmd';
   target: string;
