@@ -12,6 +12,7 @@ import { useHistory } from 'react-router';
 import WorkspaceDTO from '@/renderer/dtos/WorkspaceDTO';
 import { format } from 'date-fns';
 import { DATE_FORMAT_SHORT } from '@/constants';
+import { Collapsible } from '@/renderer/components/CollapsableContainer';
 import {
   PageHeaderTitle,
   PageHeaderHeading,
@@ -32,8 +33,6 @@ import {
   DatesInfo,
 } from './styles';
 
-import chevronUp from '../../assets/chevron-up-icon-light.svg';
-import chevronDown from '../../assets/chevron-down-icon-light.svg';
 import backIcon from '../../assets/back-icon-light.svg';
 import addIcon from '../../assets/add-icon-light.svg';
 import dragIcon from '../../assets/drag-icon-light.svg';
@@ -87,54 +86,64 @@ const Workspace: React.FC = () => {
             {editedWorkspace.programs.map(program => {
               return (
                 <ApplicationItem>
-                  <ApplicationItemHeader>
-                    <img src={dragIcon} alt="Drag" />
-                    <p>{program.name}</p>
-                    <img src={chevronUp} alt="Arrow" />
-                  </ApplicationItemHeader>
-
-                  <ApplicationItemBody>
-                    <FormGroup>
-                      <label htmlFor="js-program-name">Program name</label>
-                      <Input id="js-program-name" type="text" />
-                    </FormGroup>
-
-                    <FormGroup>
-                      <label htmlFor="js-executable-path">
-                        Executable path
-                      </label>
-                      <div>
-                        <Input id="js-executable-path" type="text" />
-                        <BrowseButton>Browse...</BrowseButton>
-                      </div>
-                    </FormGroup>
-
-                    <FormGoupRow>
+                  <Collapsible
+                    title={program.name}
+                    header={
+                      // eslint-disable-next-line react/jsx-wrap-multilines
+                      <ApplicationItemHeader>
+                        <img src={dragIcon} alt="Drag" />
+                        <p>{program.name}</p>
+                      </ApplicationItemHeader>
+                    }
+                  >
+                    <ApplicationItemBody>
                       <FormGroup>
-                        <p>Application type</p>
+                        <label htmlFor="js-program-name">Program name</label>
+                        <Input id="js-program-name" type="text" />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <label htmlFor="js-executable-path">
+                          Executable path
+                        </label>
                         <div>
-                          <label htmlFor="js-program-type-executable">
-                            <Input
-                              id="js-program-type-executable"
-                              type="radio"
-                            />
-                            Executable
-                          </label>
-                          <label htmlFor="js-program-type-command">
-                            <Input id="js-program-type-command" type="radio" />
-                            Command
-                          </label>
+                          <Input id="js-executable-path" type="text" />
+                          <BrowseButton>Browse...</BrowseButton>
                         </div>
                       </FormGroup>
 
-                      <FormGroup>
-                        <label htmlFor="js-launch-args">Launch arguments</label>
-                        <Input id="js-launch-args" type="text" />
-                      </FormGroup>
-                    </FormGoupRow>
+                      <FormGoupRow>
+                        <FormGroup>
+                          <p>Application type</p>
+                          <div>
+                            <label htmlFor="js-program-type-executable">
+                              <Input
+                                id="js-program-type-executable"
+                                type="radio"
+                              />
+                              Executable
+                            </label>
+                            <label htmlFor="js-program-type-command">
+                              <Input
+                                id="js-program-type-command"
+                                type="radio"
+                              />
+                              Command
+                            </label>
+                          </div>
+                        </FormGroup>
 
-                    <DiscardButton>Discard changes</DiscardButton>
-                  </ApplicationItemBody>
+                        <FormGroup>
+                          <label htmlFor="js-launch-args">
+                            Launch arguments
+                          </label>
+                          <Input id="js-launch-args" type="text" />
+                        </FormGroup>
+                      </FormGoupRow>
+
+                      <DiscardButton>Discard changes</DiscardButton>
+                    </ApplicationItemBody>
+                  </Collapsible>
                 </ApplicationItem>
               );
             })}

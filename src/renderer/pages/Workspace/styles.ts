@@ -99,7 +99,6 @@ export const ApplicationItem = styled.li`
 export const ApplicationItemHeader = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 12px;
 
   p {
     flex: 1;
