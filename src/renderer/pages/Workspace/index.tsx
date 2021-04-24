@@ -1,131 +1,158 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useMemo, useState } from 'react';
 import {
   PageContainer,
   PageHeader,
   PageContent,
   MainContent,
   SideContent,
+  Input,
 } from '@/renderer/styles/shared';
+import { useHistory } from 'react-router';
+import WorkspaceDTO from '@/renderer/dtos/WorkspaceDTO';
+import { format } from 'date-fns';
+import { DATE_FORMAT_SHORT } from '@/constants';
 import {
-  SearchForm,
-  SearchButton,
-  ListContainer,
-  WorkspaceList,
-  ListHearItem,
-  WorkspaceItem,
-  Title,
-  Labels,
-  Actions,
-  DeleteButton,
-  InspectButton,
+  PageHeaderTitle,
+  PageHeaderHeading,
+  SaveChangesButton,
+  StartLink,
+  EditableTitleInput,
+  AddProgramButton,
+  ApplicationsList,
+  ApplicationItem,
+  ApplicationItemHeader,
+  ApplicationItemBody,
+  FormGroup,
+  BrowseButton,
+  FormGoupRow,
+  DiscardButton,
   LaunchButton,
-  Button,
+  DeleteButton,
+  DatesInfo,
 } from './styles';
 
 import chevronUp from '../../assets/chevron-up-icon-light.svg';
 import chevronDown from '../../assets/chevron-down-icon-light.svg';
+import backIcon from '../../assets/back-icon-light.svg';
+import addIcon from '../../assets/add-icon-light.svg';
+import dragIcon from '../../assets/drag-icon-light.svg';
 
-const Workspace: React.FC = () => (
-  <PageContainer>
-    <PageHeader>
-      <h1>Your workspaces</h1>
-    </PageHeader>
+export interface WorkspaceRouteState {
+  workspace: WorkspaceDTO;
+}
 
-    <PageContent>
-      <MainContent>
-        <SearchForm>
-          <input type="text" placeholder="Search workspace" />
-          <SearchButton>Search</SearchButton>
-        </SearchForm>
-        <ListContainer>
-          <WorkspaceList>
-            <ListHearItem>Today</ListHearItem>
+const Workspace: React.FC = () => {
+  const history = useHistory<WorkspaceRouteState>();
+  const originalWorkspace = history.location.state.workspace;
+  const [editedWorkspace, setEditedWorkspace] = useState<WorkspaceDTO>(
+    originalWorkspace,
+  );
+  const [changesMade, setChangesMade] = useState(false);
 
-            <WorkspaceItem>
-              <Title>
-                Work setup (docker + java + plsql)
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>4 programs</p>
-                <p>created at 07/01/2019</p>
-              </Labels>
-            </WorkspaceItem>
+  const createdAtFormatted = useMemo(() => {
+    return format(editedWorkspace.createdAt, DATE_FORMAT_SHORT);
+  }, [editedWorkspace.createdAt]);
 
-            <ListHearItem>Yesterday</ListHearItem>
+  const updatedAtFormatted = useMemo(() => {
+    return format(editedWorkspace.updatedAt, DATE_FORMAT_SHORT);
+  }, [editedWorkspace.updatedAt]);
 
-            <WorkspaceItem>
-              <Title>
-                Casual web
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>2 programs</p>
-                <p>created at 10/10/2018</p>
-              </Labels>
+  return (
+    <PageContainer>
+      <PageHeader>
+        <PageHeaderTitle>
+          <StartLink to="/">
+            <img src={backIcon} alt="Back to start" />
+          </StartLink>
 
-              <Actions>
-                <DeleteButton>Delete</DeleteButton>
-                <InspectButton>Inspect</InspectButton>
-                <LaunchButton>Launch</LaunchButton>
-              </Actions>
-            </WorkspaceItem>
+          <EditableTitleInput value={editedWorkspace.title} />
+        </PageHeaderTitle>
 
-            <ListHearItem>December, 2020</ListHearItem>
+        <PageHeaderHeading>
+          <p>Programs</p>
 
-            <WorkspaceItem>
-              <Title>
-                Gaming with steam
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>2 programs</p>
-                <p>created at 04/12/2012</p>
-              </Labels>
-            </WorkspaceItem>
-            <WorkspaceItem>
-              <Title>
-                Streaming
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>3 programs</p>
-                <p>created at 07/25/2020</p>
-              </Labels>
-            </WorkspaceItem>
+          {changesMade && <SaveChangesButton>Save changes</SaveChangesButton>}
+        </PageHeaderHeading>
+      </PageHeader>
 
-            <ListHearItem>December, 2020</ListHearItem>
+      <PageContent>
+        <MainContent>
+          <AddProgramButton>
+            <img src={addIcon} alt="+" />
+            Add new application
+          </AddProgramButton>
 
-            <WorkspaceItem>
-              <Title>
-                Gaming with steam
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>2 programs</p>
-                <p>created at 04/12/2012</p>
-              </Labels>
-            </WorkspaceItem>
-            <WorkspaceItem>
-              <Title>
-                Streaming
-                <img src={chevronDown} alt="Arrow pointing down" />
-              </Title>
-              <Labels>
-                <p>3 programs</p>
-                <p>created at 07/25/2020</p>
-              </Labels>
-            </WorkspaceItem>
-          </WorkspaceList>
-        </ListContainer>
-      </MainContent>
+          <ApplicationsList>
+            {editedWorkspace.programs.map(program => {
+              return (
+                <ApplicationItem>
+                  <ApplicationItemHeader>
+                    <img src={dragIcon} alt="Drag" />
+                    <p>{program.name}</p>
+                    <img src={chevronUp} alt="Arrow" />
+                  </ApplicationItemHeader>
 
-      <SideContent>
-        <Button>Create workspace</Button>
-        <Button>Import workspaces</Button>
-      </SideContent>
-    </PageContent>
-  </PageContainer>
-);
+                  <ApplicationItemBody>
+                    <FormGroup>
+                      <label htmlFor="js-program-name">Program name</label>
+                      <Input id="js-program-name" type="text" />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <label htmlFor="js-executable-path">
+                        Executable path
+                      </label>
+                      <div>
+                        <Input id="js-executable-path" type="text" />
+                        <BrowseButton>Browse...</BrowseButton>
+                      </div>
+                    </FormGroup>
+
+                    <FormGoupRow>
+                      <FormGroup>
+                        <p>Application type</p>
+                        <div>
+                          <label htmlFor="js-program-type-executable">
+                            <Input
+                              id="js-program-type-executable"
+                              type="radio"
+                            />
+                            Executable
+                          </label>
+                          <label htmlFor="js-program-type-command">
+                            <Input id="js-program-type-command" type="radio" />
+                            Command
+                          </label>
+                        </div>
+                      </FormGroup>
+
+                      <FormGroup>
+                        <label htmlFor="js-launch-args">Launch arguments</label>
+                        <Input id="js-launch-args" type="text" />
+                      </FormGroup>
+                    </FormGoupRow>
+
+                    <DiscardButton>Discard changes</DiscardButton>
+                  </ApplicationItemBody>
+                </ApplicationItem>
+              );
+            })}
+          </ApplicationsList>
+        </MainContent>
+
+        <SideContent>
+          <LaunchButton>Launch</LaunchButton>
+          <DeleteButton>Delete</DeleteButton>
+
+          <DatesInfo>
+            <p>{`created at ${createdAtFormatted}`}</p>
+            <p>{`last updated at ${updatedAtFormatted}`}</p>
+          </DatesInfo>
+        </SideContent>
+      </PageContent>
+    </PageContainer>
+  );
+};
 
 export default Workspace;

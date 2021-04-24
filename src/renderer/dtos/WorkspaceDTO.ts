@@ -6,6 +6,4 @@ export default interface WorkspaceDTO {
   programs: Array<ProgramDTO>;
   createdAt: Date;
   updatedAt: Date;
-  formattedCreatedAt?: string;
-  formattedUpdatedAt?: string;
 }

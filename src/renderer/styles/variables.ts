@@ -7,4 +7,5 @@ export const colors = {
   textLight: '#FFFFFF',
   textDark: '#2D2D2D',
   error: '#E53131',
+  success: '#07B204',
 };

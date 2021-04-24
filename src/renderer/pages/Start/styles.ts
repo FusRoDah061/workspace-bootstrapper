@@ -1,34 +1,17 @@
 import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from '@/renderer/styles/variables';
-
-export const Button = styled.button`
-  width: 100%;
-  height: 60px;
-  font-size: 16px;
-  text-align: center;
-  border: none;
-  background: ${colors.primaryVariant};
-  margin-bottom: 10px;
-  border-radius: 5px;
-  transition: 0.2s;
-
-  &:hover {
-    background: ${darken(0.05, colors.primaryVariant)};
-  }
-`;
+import { Button, Input } from '@/renderer/styles/shared';
+import { CollapseTitleStyled } from '@/renderer/components/CollapsableContainer/styles';
 
 export const SearchForm = styled.form`
   display: flex;
   margin-bottom: 10px;
 
-  input {
+  ${Input} {
     flex: 1;
-    font-size: 14px;
-    padding: 0 10px;
+    height: 30px;
     margin-right: 20px;
-    border: 1px solid ${colors.secondary};
-    border-radius: 3px;
   }
 `;
 
@@ -56,30 +39,21 @@ export const ListContainer = styled.div`
 
 export const WorkspaceList = styled.ul``;
 
-export const ListHearItem = styled.li`
+export const ListHeaderItem = styled.li`
   margin-bottom: 10px;
-  list-style: none;
 `;
 
 export const WorkspaceItem = styled.li`
-  list-style: none;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
   background: ${colors.primaryVariant};
-`;
 
-export const Title = styled.button`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 700;
-  margin-bottom: 10px;
-  font-size: 14px;
-  border: none;
-  background: none;
-  outline: none;
+  ${CollapseTitleStyled} {
+    display: flex;
+    font-weight: 700;
+    font-size: 14px;
+  }
 `;
 
 export const Labels = styled.div`

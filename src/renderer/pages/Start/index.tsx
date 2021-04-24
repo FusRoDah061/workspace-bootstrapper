@@ -5,29 +5,28 @@ import {
   PageContent,
   MainContent,
   SideContent,
+  Button,
+  Input,
 } from '@/renderer/styles/shared';
 import { useHistory } from 'react-router';
 import WorkspaceDTO from '@/renderer/dtos/WorkspaceDTO';
 import getData from '@/renderer/utils/testData';
 import { differenceInDays, format } from 'date-fns';
+import { DATE_FORMAT_SHORT } from '@/constants';
+import { Collapsible } from '@/renderer/components/CollapsableContainer';
 import {
   SearchForm,
   SearchButton,
   ListContainer,
   WorkspaceList,
-  ListHearItem,
+  ListHeaderItem,
   WorkspaceItem,
-  Title,
   Labels,
   Actions,
   DeleteButton,
   InspectButton,
   LaunchButton,
-  Button,
 } from './styles';
-
-import chevronUp from '../../assets/chevron-up-icon-light.svg';
-import chevronDown from '../../assets/chevron-down-icon-light.svg';
 
 interface ListGroup {
   label: string;
@@ -54,20 +53,10 @@ const Start: React.FC = () => {
         date = format(workspace.createdAt, 'MMMM, yyyy');
       }
 
-      const formattedWorkspace = workspace;
-      formattedWorkspace.formattedCreatedAt = format(
-        workspace.createdAt,
-        'dd/MM/yyyy',
-      );
-      formattedWorkspace.formattedUpdatedAt = format(
-        workspace.updatedAt,
-        'dd/MM/yyyy',
-      );
-
       if (date in groupObject) {
-        groupObject[date].push(formattedWorkspace);
+        groupObject[date].push(workspace);
       } else {
-        groupObject[date] = [formattedWorkspace];
+        groupObject[date] = [workspace];
       }
     });
 
@@ -82,7 +71,7 @@ const Start: React.FC = () => {
   const handleInspect = useCallback(
     (workspace: WorkspaceDTO) => {
       console.log(workspace);
-      history.push('/workspace');
+      history.push('/workspace', { workspace });
     },
     [history],
   );
@@ -104,43 +93,49 @@ const Start: React.FC = () => {
       <PageContent>
         <MainContent>
           <SearchForm>
-            <input type="text" placeholder="Search workspace" />
+            <Input type="text" placeholder="Search workspace" />
             <SearchButton>Search</SearchButton>
           </SearchForm>
           <ListContainer>
             <WorkspaceList>
               {listGroups.map((group: ListGroup) => {
                 const label = (
-                  <ListHearItem key={group.label}>{group.label}</ListHearItem>
+                  <ListHeaderItem key={group.label}>
+                    {group.label}
+                  </ListHeaderItem>
                 );
 
-                const itemsElements = group.items.map(workspace => (
-                  <WorkspaceItem key={workspace.id}>
-                    <Title>
-                      {workspace.title}
-                      <img src={chevronDown} alt="Arrow pointing down" />
-                    </Title>
-                    <Labels>
-                      <p>{`${workspace.programs.length} programs`}</p>
-                      <p>
-                        created at
-                        {workspace.formattedCreatedAt}
-                      </p>
-                    </Labels>
+                const itemsElements = group.items.map(workspace => {
+                  const createdAtFormatted = format(
+                    workspace.createdAt,
+                    DATE_FORMAT_SHORT,
+                  );
 
-                    <Actions>
-                      <DeleteButton onClick={() => handleDelete(workspace)}>
-                        Delete
-                      </DeleteButton>
-                      <InspectButton onClick={() => handleInspect(workspace)}>
-                        Inspect
-                      </InspectButton>
-                      <LaunchButton onClick={() => handleLaunch(workspace)}>
-                        Launch
-                      </LaunchButton>
-                    </Actions>
-                  </WorkspaceItem>
-                ));
+                  return (
+                    <WorkspaceItem key={workspace.id}>
+                      <Collapsible title={workspace.title}>
+                        <Labels>
+                          <p>{`${workspace.programs.length} programs`}</p>
+                          <p>{`created at ${createdAtFormatted}`}</p>
+                        </Labels>
+
+                        <Actions>
+                          <DeleteButton onClick={() => handleDelete(workspace)}>
+                            Delete
+                          </DeleteButton>
+                          <InspectButton
+                            onClick={() => handleInspect(workspace)}
+                          >
+                            Inspect
+                          </InspectButton>
+                          <LaunchButton onClick={() => handleLaunch(workspace)}>
+                            Launch
+                          </LaunchButton>
+                        </Actions>
+                      </Collapsible>
+                    </WorkspaceItem>
+                  );
+                });
 
                 return [label, ...itemsElements];
               })}
